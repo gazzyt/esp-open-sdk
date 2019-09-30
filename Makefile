@@ -10,7 +10,7 @@ TOOLCHAIN = $(TOP)/xtensa-lx106-elf
 
 # Vendor SDK version to install, see VENDOR_SDK_ZIP_* vars below
 # for supported versions.
-VENDOR_SDK = 3.0.0
+VENDOR_SDK = 3.0.1
 
 .PHONY: crosstool-NG toolchain libhal libcirom sdk
 
@@ -23,8 +23,8 @@ UNZIP = unzip -q -o
 VENDOR_SDK_ZIP = $(VENDOR_SDK_ZIP_$(VENDOR_SDK))
 VENDOR_SDK_DIR = $(VENDOR_SDK_DIR_$(VENDOR_SDK))
 
-VENDOR_SDK_ZIP_3.0.0 = ESP8266_NONOS_SDK-3.0.zip
-VENDOR_SDK_DIR_3.0.0 = ESP8266_NONOS_SDK-3.0
+VENDOR_SDK_ZIP_3.0.1 = ESP8266_NONOS_SDK-3.0.1.zip
+VENDOR_SDK_DIR_3.0.1 = ESP8266_NONOS_SDK-3.0.1
 VENDOR_SDK_ZIP_2.2.0 = ESP8266_NONOS_SDK-2.2.0.zip
 VENDOR_SDK_DIR_2.2.0 = ESP8266_NONOS_SDK-2.2.0
 VENDOR_SDK_DIR_2.1.0-18-g61248df = ESP8266_NONOS_SDK-2.1.0-18-g61248df
@@ -184,7 +184,7 @@ $(VENDOR_SDK_DIR)/.dir: $(VENDOR_SDK_ZIP)
 	-mv License $(VENDOR_SDK_DIR)
 	touch $@
 
-$(VENDOR_SDK_DIR_3.0.0)/.dir: $(VENDOR_SDK_ZIP_3.0.0)
+$(VENDOR_SDK_DIR_3.0.1)/.dir: $(VENDOR_SDK_ZIP_3.0.1)
 	$(UNZIP) $^
 	touch $@
 
@@ -216,9 +216,9 @@ $(VENDOR_SDK_DIR_1.5.4)/.dir: $(VENDOR_SDK_ZIP_1.5.4)
 
 sdk_patch: $(VENDOR_SDK_DIR)/.dir .sdk_patch_$(VENDOR_SDK)
 
-.sdk_patch_3.0.0: user_rf_cal_sector_set.o
-	echo -e "#undef ESP_SDK_VERSION\n#define ESP_SDK_VERSION 030000" >>$(VENDOR_SDK_DIR)/include/esp_sdk_ver.h
-	$(PATCH) -d $(VENDOR_SDK_DIR) -p1 < c_types-c99_sdk_2.patch
+.sdk_patch_3.0.1: user_rf_cal_sector_set.o
+	echo -e "#undef ESP_SDK_VERSION\n#define ESP_SDK_VERSION 030001" >>$(VENDOR_SDK_DIR)/include/esp_sdk_ver.h
+	$(PATCH) -d $(VENDOR_SDK_DIR) -p1 < c_types-c99_sdk_3.patch
 	cd $(VENDOR_SDK_DIR)/lib; mkdir -p tmp; cd tmp; $(TOOLCHAIN)/bin/xtensa-lx106-elf-ar x ../libcrypto.a; cd ..; $(TOOLCHAIN)/bin/xtensa-lx106-elf-ar rs libwpa.a tmp/*.o
 	$(TOOLCHAIN)/bin/xtensa-lx106-elf-ar r $(VENDOR_SDK_DIR)/lib/libmain.a user_rf_cal_sector_set.o
 	@touch $@
@@ -391,8 +391,8 @@ ifeq ($(STANDALONE),y)
 endif
 
 
-ESP8266_NONOS_SDK-3.0.zip:
-	wget --content-disposition "https://github.com/espressif/ESP8266_NONOS_SDK/archive/v3.0.zip"
+ESP8266_NONOS_SDK-3.0.1.zip:
+	wget --content-disposition "https://github.com/espressif/ESP8266_NONOS_SDK/archive/v3.0.1.zip"
 ESP8266_NONOS_SDK-2.2.0.zip:
 	wget --content-disposition "https://github.com/espressif/ESP8266_NONOS_SDK/archive/v2.2.0.zip"
 ESP8266_NONOS_SDK-2.1.0.zip:
