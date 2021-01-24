@@ -192,6 +192,10 @@ $(VENDOR_SDK_DIR_3.0.4)/.dir: $(VENDOR_SDK_ZIP_3.0.4)
 	$(UNZIP) $^
 	touch $@
 
+$(VENDOR_SDK_DIR_2.2.1)/.dir: $(VENDOR_SDK_ZIP_2.2.1)
+	$(UNZIP) $^
+	touch $@
+
 $(VENDOR_SDK_DIR_2.2.0)/.dir: $(VENDOR_SDK_ZIP_2.2.0)
 	$(UNZIP) $^
 	touch $@
